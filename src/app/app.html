@@ -1,0 +1,115 @@
+<div class="container">    <h1>🎓 Student Task Manager</h1>    <div class="stats">  <div class="card">  
+  <h3>Total Tasks</h3>  
+  <p>{{ tasks.length }}</p>  
+</div>  
+
+<div class="card">  
+  <h3>Completed</h3>  
+  <p>{{ completedTasks }}</p>  
+</div>  
+
+<div class="card">  
+  <h3>Pending</h3>  
+  <p>{{ pendingTasks }}</p>  
+</div>
+
+  </div>    <div class="controls">  <input  
+  type="text"  
+  placeholder="🔍 Search Task..."  
+  [(ngModel)]="searchText">  
+
+<select [(ngModel)]="filter">  
+  <option value="All">All</option>  
+  <option value="Completed">Completed</option>  
+  <option value="Pending">Pending</option>  
+</select>
+
+  </div>    <div class="add-task">  <input  
+  type="text"  
+  placeholder="Enter a new task..."  
+  #taskInput>  
+
+<select #priority>  
+
+  <option value="High">🔴 High</option>  
+  <option value="Medium">🟠 Medium</option>  
+  <option value="Low">🟢 Low</option>  
+
+</select>  
+
+<button  
+  (click)="addTask(taskInput.value, priority.value); taskInput.value=''">  
+  ➕ Add Task  
+</button>
+
+  </div>  <button
+class="delete-all"
+(click)="clearTasks()">
+🗑 Delete All
+</button>
+
+  <div class="task-list">  @if(filteredTasks.length === 0){  
+
+  <div class="empty">  
+    <h2>📋 No Tasks Found</h2>  
+    <p>Add your first task to get started.</p>  
+  </div>  
+
+} @else {  
+
+  @for(task of filteredTasks; track task.id){
+    <div class="task-card">
+
+          <div class="task-left">
+
+            <h3 [class.completed]="task.completed">
+              {{ task.name }}
+            </h3>
+
+            <span
+              class="badge"
+              [ngClass]="{
+                'high': task.priority === 'High',
+                'medium': task.priority === 'Medium',
+                'low': task.priority === 'Low'
+              }">
+
+              {{ task.priority }}
+
+            </span>
+
+            <p class="date">
+              📅 {{ task.createdAt }}
+            </p>
+
+          </div>
+
+          <div class="task-right">
+
+            <button
+              class="complete-btn"
+              (click)="toggleTask(task)">
+
+              {{ task.completed ? '↩ Undo' : '✔ Complete' }}
+
+            </button>
+
+            <button
+              class="delete-btn"
+              (click)="deleteTask(task)">
+
+              🗑 Delete
+
+            </button>
+
+          </div>
+
+        </div>
+
+      }
+
+    }
+
+  </div>
+
+</div>
